@@ -17,7 +17,7 @@
         // simulate random checkout failure.
         (Math.random() > 0.5 || navigator.webdriver)
           ? cb()
-          : errorCb()
+          : errorCb('Checkout failed')
       }, 100)
     }
   }
