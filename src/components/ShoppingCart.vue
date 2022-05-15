@@ -11,30 +11,29 @@
         <button @click="checkout()"
                 :disabled="$store.getters.cartTotalItems === 0">Checkout</button>
 
-        <p v-if="$store.state.checkoutStatus">{{$store.state.checkoutStatus}}</p>
+        <p v-if="checkoutStatus">{{checkoutStatus}}</p>
     </div>
 </template>
 
 <script>
+    import {mapState, mapGetters, mapActions} from 'vuex'
+
     export default {
         computed: {
-            products () {
-                return this.$store.getters.cartProducts
-            },
+            ...mapGetters('cart', {
+                products: 'cartProducts',
+                total: 'cartTotal'
+            }),
 
-            total () {
-                return this.$store.getters.cartTotal
-            }
+            ...mapState('cart', {
+                checkoutStatus: state => state.checkoutStatus
+            })
         },
 
         methods: {
-            checkout () {
-                this.$store.dispatch('checkout')
-                           .catch(err => {
-                               console.error(err)
-                               alert('Failed to checkout, please try again.')
-                           })
-            }
+            ...mapActions('cart', {
+                checkout: 'checkout'
+            })
         }
     }
 </script>
